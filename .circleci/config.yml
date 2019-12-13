@@ -4,7 +4,7 @@ image_config: &image_config
   # either as project-specific environment variables
   # or as resources in your organization's org-global Context
 
-  IMAGE_NAME: ruby-node-python
+  IMAGE_NAME: ruby-python-node
 
   IMAGE_TAG: latest
 
@@ -13,7 +13,7 @@ image_config: &image_config
   # make sure you also add the values of your IMAGE_NAME & IMAGE_TAG variables
   # to the `test_image` job (line 55)
 
-  LINUX_VERSION: UBUNTU_XENIAL
+  LINUX_VERSION: DEBIAN_STRETCH
 
   RUBY_VERSION_NUM: 2.4.2
 
@@ -41,7 +41,7 @@ jobs:
     steps:
       - checkout
 
-      - run: bash scripts/generate.sh > Dockerfile
+      - run: bash scripts/generate.sh > Dockerfile && cat Dockerfile
 
       - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
@@ -54,7 +54,7 @@ jobs:
 
   test_image:
     docker:
-      - image: $DOCKER_USERNAME/node-python-ruby:latest
+      - image: $DOCKER_USERNAME/ruby-python-node:latest
         environment:
           <<: *image_config
 
